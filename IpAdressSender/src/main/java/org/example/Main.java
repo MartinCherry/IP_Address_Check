@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 import org.json.JSONObject;
 import java.util.Properties;
@@ -17,8 +18,8 @@ import javax.mail.internet.MimeMessage;
 
 public class Main {
 
-    private static final String EMAIL_ADDRESS = "YourEmailAdress@gmail.com";
-    private static final String EMAIL_PASSWORD = "YourEmailDevicePassword";
+    private static String emailAddress;
+    private static String emailPassword;
     // For more information look - https://support.google.com/accounts/answer/185833?visit_id=638020694196511756-3824924280&p=InvalidSecondFactor&rd=1
     private static final String ANSI_RESET = "\u001B[0m";
     private static final String ANSI_RED = "\u001B[31m";
@@ -27,6 +28,15 @@ public class Main {
     private final static String ipAPIChecker = "https://api.ipify.org/?format=json";
 
     public static void main(String[] args) throws InterruptedException {
+        Scanner in = new Scanner(System.in);
+        System.out.println("Please enter your email address: ");
+        emailAddress = in.nextLine();
+        System.out.println("Please enter your email password: ");
+        emailPassword = in.nextLine();
+        System.out.println("Thank you.");
+        System.out.println("Your email is - " + emailAddress);
+        System.out.println("Your password is - " + emailPassword);
+
         while (true) {
             String ipFromAPI = getYourIpAddress();
             if (!ipAddress.equals(ipFromAPI)) {
@@ -88,7 +98,7 @@ public class Main {
 
             protected PasswordAuthentication getPasswordAuthentication() {
 
-                return new PasswordAuthentication(EMAIL_ADDRESS, EMAIL_PASSWORD);
+                return new PasswordAuthentication(emailAddress, emailPassword);
 
             }
 
@@ -102,10 +112,10 @@ public class Main {
             MimeMessage message = new MimeMessage(session);
 
             // Set From: header field of the header.
-            message.setFrom(new InternetAddress(EMAIL_ADDRESS));
+            message.setFrom(new InternetAddress(emailAddress));
 
             // Set To: header field of the header.
-            message.addRecipient(Message.RecipientType.TO, new InternetAddress(EMAIL_ADDRESS));
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress(emailAddress));
 
             // Set Subject: header field
             message.setSubject("Your IP adress has been changed!");
